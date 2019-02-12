@@ -28,8 +28,22 @@ let add = {
       value & pos(1, int, 0) & info([], ~docv="number", ~doc="Second number")
     );
 
+  let multiply =
+    Arg.(value & flag & info(["m", "multiply"], ~doc="Gang istedenfor"));
+
   (
-    Term.(const((x, y) => print_result(Calculator.add(x, y))) $ x $ y),
+    Term.(
+      const((x, y, multiply) =>
+        if (multiply) {
+          print_result(x * y);
+        } else {
+          print_result(Calculator.add(x, y));
+        }
+      )
+      $ x
+      $ y
+      $ multiply
+    ),
     Term.info("add", ~version),
   );
 };
